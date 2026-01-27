@@ -1,16 +1,16 @@
-from enum import Enum, auto
+from enum import Enum
 
 class Colour(Enum):
 
-    WHITE = auto()
-    BLACK = auto()
-    VACANT = auto()
+    WHITE = "W"
+    BLACK = "B"
+    VACANT = "V"
 
 class PieceType(Enum):
 
     PAWN = "P"
     ROOK = "R"
-    KNIGHT = "K"
+    KNIGHT = "N"
     BISHOP = "B"
     QUEEN = "Q"
     KING = "K"

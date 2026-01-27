@@ -1,0 +1,61 @@
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+body {
+  overflow: hidden;
+}
+
+td svg {
+  width: 80%;
+  height: 80%;
+  display: inline-block;
+}
+
+td {
+  width: 6vw;
+  height: 6vw;
+  align-items: center;
+  vertical-align: middle;
+  border: 1px solid white;
+}
+
+.board {
+  text-align: right;
+  grid-template-columns: repeat(8, 1fr);
+  width: min(90vw, 90vh);
+  height: min(90vw, 90vh);
+  aspect-ratio: 1;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/* pseudo class selectors to colour squares based on even/odd */
+tr:nth-child(odd) td:nth-child(odd),
+tr:nth-child(even) td:nth-child(even) {
+  background: #f0d9b5
+}
+
+tr:nth-child(even) td:nth-child(odd),
+tr:nth-child(odd) td:nth-child(even) {
+  background: #b58863
+}
+
+td.over {
+  outline: 5px solid gold;
+  outline-offset: -5px;
+}
+
+td.held {
+  opacity: 0.5;
+}
+
+td:not(.legal) {
+  opacity:0.5
+}
