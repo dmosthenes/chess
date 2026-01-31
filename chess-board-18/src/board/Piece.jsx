@@ -5,7 +5,7 @@ import BlackKnight from "../assets/BlackKnight";
 import BlackPawn from "../assets/BlackPawn";
 import WhiteQueen from "../assets/WhiteQueen";
 import WhiteKing from "../assets/WhiteKing";
-import { BlackKing } from "../assets/BlackKing";
+import BlackKing from "../assets/BlackKing";
 import WhiteRook from "../assets/WhiteRook";
 import WhiteBishop from "../assets/WhiteBishop";
 import WhiteKnight from "../assets/WhiteKnight";
@@ -36,10 +36,10 @@ export default function Piece({type, ...props}){
                 pieceComponent = <BlackPawn/>
                 break
             case "Q":
-                pieceComponent = <WhiteQueen/>
+                pieceComponent = <WhiteKing/>
                 break
             case "K":
-                pieceComponent = <WhiteKing/>
+                pieceComponent = <WhiteQueen/>
                 break
             case "R":
                 pieceComponent = <WhiteRook/>

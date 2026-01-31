@@ -340,7 +340,9 @@ function getQueenMoves(held, turn, pos, currentReg){
     // get straight moves
     const straights = getRookMoves(held, turn, pos, currentReg)
 
-    return diagonals.push(...straights)
+    const out = [...diagonals, ...straights]
+
+    return out
 }
 
 function getKingMoves(held, turn, availableMoves, pos){

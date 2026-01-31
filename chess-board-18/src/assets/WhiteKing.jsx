@@ -1,4 +1,4 @@
-export default function WhiteQueen() {
+export default function WhiteKing() {
   return (
       <g
         style={{

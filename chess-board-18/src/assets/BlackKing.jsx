@@ -1,4 +1,4 @@
-export function BlackKing() {
+export default function BlackKing() {
   return (
       <g
         style={{
