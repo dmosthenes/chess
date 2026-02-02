@@ -66,9 +66,6 @@ export function getLegalMoves(held, turn, pos){
 
     const currentCol = held % 8
 
-    console.log(pos[held])
-
-
     // can assume that the piece is the current turn's colour
     switch(pos[held].toLowerCase()){
         case "p":
@@ -194,6 +191,9 @@ function getPawnMoves(held, turn, availableMoves, pos, currentRow, currentCol){
         availableMoves = availableMoves.filter((move) => (move % 8 != currentCol))
     } 
 
+    // can't land on a square during double step (initial move) if occupied by enemy
+
+
     // can only move forwards, except when taking at +7 or +9
     availableMoves = availableMoves.filter((move) => (
                     move % 8 === currentCol && move ||
@@ -311,7 +311,42 @@ function getRookMoves(held, turn, pos, currentReg){
 //     return turn === "w" ? rotateLegal(availableMoves) : availableMoves
 // }
 
-function getKnightMoves(held, turn, availableMoves, pos){
+function getKnightMoves(held, turn, availableMoves, pos, currentRow, currentCol){
+
+    // possible moves are -17, -15, -10, -6, +6, +10, +15, +16
+    let knightMoves = [-17, -15, -10, -6, 6, 10, 15, 17]
+    knightMoves = knightMoves.map(move => move + held)
+
+    availableMoves = availableMoves.filter(move => knightMoves.includes(move))
+
+    // fix rows
+    // if (currentRow <= 1){
+    //     availableMoves = availableMoves.filter(move => ![15 + held, 17 + held].includes(move))
+    //     }
+    //     console.log(availableMoves)
+    // if (currentRow === 0){
+    //     availableMoves = availableMoves.filter(move => ![6 + held, 10 + held].includes(move))
+    //     }
+    // if (currentRow >= 6){
+    //     availableMoves = availableMoves.filter(move => ![-17 + held, -15 + held].includes(move))
+    //     }
+    // if (currentRow === 7){
+    //     availableMoves = availableMoves.filter(move => ![-10 + held, -6 + held].includes(move))
+    //     }
+
+    // fix columns
+    // if (currentCol <= 1){
+    //     availableMoves = availableMoves.filter(move => ![-10 + held, 6 + held].includes(move))
+    //     }
+    // if (currentCol === 0){
+    //     availableMoves = availableMoves.filter(move => ![-17 + held, 15 + held].includes(move))
+    //     }
+    // if (currentCol >= 6){
+    //     availableMoves = availableMoves.filter(move => ![-6 + held, 10 + held].includes(move))
+    //     }
+    // if (currentCol === 7){
+    //     availableMoves = availableMoves.filter(move => ![-15 + held, 17 + held].includes(move))
+    // }
     
     // if white, return rotated board
     return turn === "w" ? rotateLegal(availableMoves) : availableMoves
@@ -345,8 +380,53 @@ function getQueenMoves(held, turn, pos, currentReg){
     return out
 }
 
-function getKingMoves(held, turn, availableMoves, pos){
-    
+function getKingMoves(held, turn, availableMoves, pos, currentRow, currentCol){
+
+    // rules for king
+    // can move in any direction, one square at a time
+    // can be +1, -1 but check if in an outside column
+    // -9, -8, -7, +7, +8, +9 but check if in an outside row or outside column
+    // if in leftmost column, can't move to -1, -9, +7
+    // if in rightmost column, can't move to +1, -7, +9
+    // if in topmost row, can't move to -9, -8, -7
+    // if in bottommost row, can't move to +7, +8, +9
+
+    // get the indicies of available moves based on the current piece's index
+    let kingMoves = [-9, -8, -7, -1, 1, 7, 8, 9]
+    kingMoves = kingMoves.map(diff => diff + held)
+
+    // filter out everything but 8 possible moves
+    availableMoves = availableMoves.filter(move => kingMoves.includes(move))
+
+    // filter out any of 8 possible moves which are wrapping
+    const topDiff = [-9, -8, -7]
+
+    const leftDiff = [-9, -1, 7]
+
+    const rightDiff = [-7, 1, 9]
+
+    const bottomDiff = [7, 8, 9]
+
+    // filter rows
+    if (currentRow === 0){
+        const topKingDiff = topDiff.map(diff => diff + held)
+        availableMoves = availableMoves.filter(move => (!topKingDiff.includes(move)))
+    }
+    if (currentRow === 7){
+        const bottKingDiff = bottomDiff.map(diff => diff + held)
+        availableMoves = availableMoves.filter(move => (!bottKingDiff.includes(move)))
+    }
+
+    // filter cols
+    if (currentCol === 0){
+        const leftKingDiff = leftDiff.map(diff => diff + held)
+        availableMoves = availableMoves.filter(move => (!leftKingDiff.includes(move)))
+    }
+    if (currentCol === 7){
+        const rightKingDiff = rightDiff.map(diff => diff + held)
+        availableMoves = availableMoves.filter(move => (!rightKingDiff.includes(move)))
+    }
+
     // if white, return rotated board
     return turn === "w" ? rotateLegal(availableMoves) : availableMoves
 }
